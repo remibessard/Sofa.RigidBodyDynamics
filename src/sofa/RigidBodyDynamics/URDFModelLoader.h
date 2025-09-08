@@ -22,9 +22,14 @@
 #pragma once
 
 #include <sofa/RigidBodyDynamics/config.h>
+#include <sofa/RigidBodyDynamics/Types.h>
 
 #include <sofa/core/loader/SceneLoader.h>
-#include <sofa/core/objectmodel/DataFileName.h>
+#include <sofa/simulation/Node.h>
+
+#include <pinocchio/parsers/urdf.hpp>
+#include <pinocchio/algorithm/default-check.hpp>
+
 
 namespace sofa::rigidbodydynamics
 {
@@ -37,19 +42,26 @@ namespace sofa::rigidbodydynamics
     SOFA_CLASS(URDFModelLoader, sofa::core::loader::SceneLoader);
 
     void setModelDirectory(const std::string &d);
-    const std::string &getModelDirectory() /*const*/;
+    const std::string &getModelDirectory() const /*const*/;
 
     void setUseFreeFlyerRootJoint(bool useFreeFlyerRootJoint);
-    bool getUseFreeFlyerRootJoint();
+    bool getUseFreeFlyerRootJoint() const;
+
+    int kSkipUniverse = 1;
+
 
     void init() override;
 
     bool load() override;
 
+    static simulation::Node::SPtr convertPinModel2SOFA(std::shared_ptr<pinocchio::Model> model, std::shared_ptr <pinocchio::GeometryModel> visualModel, std::map< pinocchio::FrameIndex, std::vector<std::string>>& frame2MeshesMap,
+        simulation::Node* context, Data < sofa::type::vector<sofa::type::Vec1d> > &qInit, Data < sofa::type::vector<sofa::type::Vec1d> > &qRest, bool useFreeFlyerRootJoint = false, bool fixUniverse = false);
+
     Data<std::string> d_modelDirectory;
     Data<bool> d_useFreeFlyerRootJoint;
     Data<bool> d_addCollision;
     Data<bool> d_addJointsActuators;
+	Data<bool> d_fixUniverse; // if true, adds a FixedConstraint to universe Frame
     Data<sofa::type::vector<sofa::type::Vec1d>> d_qRest;
     Data<sofa::type::vector<sofa::type::Vec1d>> d_qInit;
 
