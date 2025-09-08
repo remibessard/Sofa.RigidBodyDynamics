@@ -50,6 +50,16 @@ const char* getModuleName()
     return sofa_tostring(SOFA_TARGET);
 }
 
+const char* getModuleVersion()
+{
+    return MODULE_VERSION;
+}
+
+const char* getModuleLicense()
+{
+    return "LGPL";
+}
+
 const char* getModuleDescription()
 {
     return "Implementation of rigid body dynamics based on pinocchio library.";

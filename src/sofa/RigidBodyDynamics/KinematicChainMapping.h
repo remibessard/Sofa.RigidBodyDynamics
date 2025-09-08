@@ -89,7 +89,7 @@ namespace sofa::component::mapping::nonlinear
 
     void setModel(const std::shared_ptr<pinocchio::Model> &model);
 
-    void setBodyCoMFrames(const std::vector<pinocchio::FrameIndex>& bodyCoMFrames);
+    void set_body_centerOfMass_frames(const std::vector<pinocchio::FrameIndex>& bodyCoMFrames);
 
     // TODO accessors if OK
     std::vector<pinocchio::FrameIndex> m_extraFrames;

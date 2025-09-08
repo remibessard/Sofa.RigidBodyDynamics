@@ -25,8 +25,6 @@
 #include <sofa/RigidBodyDynamics/BaseShapesConversions.h>
 
 #include <coal/BVH/BVH_model.h>
-#include <coal/shape/geometric_shapes.h>
-#include <pinocchio/spatial/fcl-pinocchio-conversions.hpp>
 
 namespace
 {

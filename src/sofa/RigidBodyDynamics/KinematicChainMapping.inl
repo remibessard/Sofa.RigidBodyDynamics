@@ -78,7 +78,7 @@ namespace sofa::component::mapping::nonlinear
       return;
     }
 
-    if (not this->getFromModels2().empty())
+    if (! this->getFromModels2().empty())
     {
       m_fromRootModel = this->getFromModels2()[0];
       msg_info() << "Root Model found : Name = " << m_fromRootModel->getName();
@@ -114,7 +114,7 @@ namespace sofa::component::mapping::nonlinear
     if (d_componentState.getValue() == sofa::core::objectmodel::ComponentState::Invalid)
       return;
 
-    if (dataVecOutPos.empty() or dataVecInPos.empty())
+    if (dataVecOutPos.empty() || dataVecInPos.empty())
       return;
 
     if (dataVecOutPos.size() > 1)
@@ -140,7 +140,7 @@ namespace sofa::component::mapping::nonlinear
 
 
     // msg_info() << "========= KinematicChainMapping apply main";
-    if (not dataVecInRootPos.empty())
+    if (!dataVecInRootPos.empty())
     {
       apply(dataVecOutPos[0]->beginEdit(), &dataVecInPos[0]->getValue(), &dataVecInRootPos[0]->getValue());
     }
@@ -162,7 +162,7 @@ namespace sofa::component::mapping::nonlinear
     if (d_componentState.getValue() == sofa::core::objectmodel::ComponentState::Invalid)
       return;
 
-    if (dataVecOutVel.empty() or dataVecInVel.empty())
+    if (dataVecOutVel.empty() || dataVecInVel.empty())
       return;
 
     if (dataVecOutVel.size() > 1)
@@ -187,7 +187,7 @@ namespace sofa::component::mapping::nonlinear
     }
 
     // msg_info() << "========= KinematicChainMapping applyJ main";
-    if (not dataVecInRootVel.empty())
+    if (! dataVecInRootVel.empty())
     {
       applyJ(dataVecOutVel[0]->beginEdit(), &dataVecInVel[0]->getValue(), &dataVecInRootVel[0]->getValue());
     }
@@ -209,7 +209,7 @@ namespace sofa::component::mapping::nonlinear
     if (d_componentState.getValue() == sofa::core::objectmodel::ComponentState::Invalid)
       return;
 
-    if (dataVecInForce.empty() or dataVecOut1Force.empty())
+    if (dataVecInForce.empty() || dataVecOut1Force.empty())
       return;
 
     if (dataVecInForce.size() != 1)
@@ -234,7 +234,7 @@ namespace sofa::component::mapping::nonlinear
     }
 
     // msg_info() << "========= KinematicChainMapping applyJT main";
-    if (not dataVecOut2Force.empty())
+    if (! dataVecOut2Force.empty())
     {
       applyJT(dataVecOut1Force[0]->beginEdit(), dataVecOut2Force[0]->beginEdit(), &dataVecInForce[0]->getValue());
       dataVecOut2Force[0]->endEdit();
@@ -257,7 +257,7 @@ namespace sofa::component::mapping::nonlinear
     if (d_componentState.getValue() == sofa::core::objectmodel::ComponentState::Invalid)
       return;
 
-    if (dataMatInConst.empty() or dataMatOut1Const.empty())
+    if (dataMatInConst.empty() || dataMatOut1Const.empty())
       return;
 
     if (dataMatInConst.size() != 1)
@@ -282,7 +282,7 @@ namespace sofa::component::mapping::nonlinear
     }
 
     // msg_info() << "========= KinematicChainMapping applyJT matrix main";
-    if (not dataMatOut2Const.empty())
+    if (! dataMatOut2Const.empty())
     {
       applyJT(dataMatOut1Const[0]->beginEdit(), dataMatOut2Const[0]->beginEdit(), &dataMatInConst[0]->getValue());
       dataMatOut2Const[0]->endEdit();
@@ -311,7 +311,7 @@ namespace sofa::component::mapping::nonlinear
   }
 
   template <class TIn, class TInRoot, class TOut>
-  void KinematicChainMapping<TIn, TInRoot, TOut>::setBodyCoMFrames(const std::vector<pinocchio::FrameIndex> &bodyCoMFrames)
+  void KinematicChainMapping<TIn, TInRoot, TOut>::set_body_centerOfMass_frames(const std::vector<pinocchio::FrameIndex> &bodyCoMFrames)
   {
     m_bodyCoMFrames = bodyCoMFrames;
   }
@@ -346,12 +346,12 @@ namespace sofa::component::mapping::nonlinear
     if (d_componentState.getValue() == sofa::core::objectmodel::ComponentState::Invalid)
       return;
 
-    const int num_joints = m_model->njoints - kSkipUniverse; // if we do not want universe joint
+    const int num_joints = m_model->njoints - sofa::rigidbodydynamics::kSkipUniverse; // if we do not want universe joint
 
     // msg_info() << "========= KinematicChainMapping apply entering...";
 
     Eigen::VectorXd q = Eigen::VectorXd::Zero(m_model->nq);
-    if (m_fromRootModel and inRoot != nullptr)
+    if (m_fromRootModel && inRoot != nullptr)
     {
       const sofa::defaulttype::RigidCoord<3, double> &rootPose_w = (*inRoot)[d_indexFromRoot.getValue()];
       q.head<7>() = se3ToEigen(rootPose_w);
@@ -412,7 +412,7 @@ namespace sofa::component::mapping::nonlinear
 
     // map in configuration to pinocchio
     Eigen::VectorXd dq = Eigen::VectorXd::Zero(m_model->nv);
-    if (m_fromRootModel and inRoot != nullptr)
+    if (m_fromRootModel && inRoot != nullptr)
     {
       const sofa::defaulttype::RigidDeriv<3, double> &rootVel_w = (*inRoot)[d_indexFromRoot.getValue()];
       dq.head<6>() = spatialVelocityToEigen(rootVel_w);
@@ -491,7 +491,7 @@ namespace sofa::component::mapping::nonlinear
       jointsTorques += J.transpose() * frameForce;
     }
 
-    if (m_fromRootModel and outRoot != nullptr)
+    if (m_fromRootModel && outRoot != nullptr)
     {
       // joint torques contains first 6 parameters for the root joint, and nv-6 parameters for other joints
       // write (add) root joint spatial force
@@ -533,7 +533,7 @@ namespace sofa::component::mapping::nonlinear
     //   outRoot->clear();
     // }
     // print output matrices
-    if (m_fromRootModel and outRoot != nullptr)
+    if (m_fromRootModel && outRoot != nullptr)
     {
       msg_info() << "BEGIN outRootWrench CRS matrix:";
         // helper::WriteAccessor<DataMatrixDeriv_t<InRoot>> _outRoot(outRoot);
@@ -582,7 +582,7 @@ namespace sofa::component::mapping::nonlinear
         jointsTorques += J.transpose() * spatialVelocityToEigen(colIt.val());
       }
 
-      if (m_fromRootModel and outRoot != nullptr)
+      if (m_fromRootModel && outRoot != nullptr)
       {
         if(jointsTorques.squaredNorm() > kMinTorqueSqrd)// dismiss dofs resulting in null torque
         {
@@ -616,7 +616,7 @@ namespace sofa::component::mapping::nonlinear
     }
 
     // print output matrices
-    if (m_fromRootModel and outRoot != nullptr)
+    if (m_fromRootModel && outRoot != nullptr)
     {
       msg_info() << "END outRootWrench CRS matrix:";
         // helper::WriteAccessor<DataMatrixDeriv_t<InRoot>> _outRoot(outRoot);

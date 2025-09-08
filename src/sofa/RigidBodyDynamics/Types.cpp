@@ -19,17 +19,9 @@
  *                                                                             *
  * Contact information: contact@sofa-framework.org                             *
  ******************************************************************************/
-#pragma once
-#include<sofa/RigidBodyDynamics/config.h>
-
-#include <coal/shape/geometric_shapes.h>
-#include <pinocchio/spatial/se3.hpp>
-#include <sofa/component/topology/container/constant/MeshTopology.h>
+#include<sofa/RigidBodyDynamics/Types.h>
 
 namespace sofa::rigidbodydynamics
 {
-  typedef std::size_t JointIndex;
-
-  extern int SOFA_RIGIDBODYDYNAMICS_API kSkipUniverse; // Debugging
-
-} // namespace sofa::rigidbodydynamics
+  int kSkipUniverse = 0; // Debugging
+}
